@@ -2,11 +2,9 @@ package launcher
 
 import (
 	"fmt"
-	"os/exec"
-	"strconv"
-
 	"jump-agent/internal/config"
 	"jump-agent/internal/model"
+	"os/exec"
 )
 
 type FileZilla struct{}

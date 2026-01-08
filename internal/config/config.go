@@ -35,3 +35,12 @@ func GetFileZillaPath() (string, error) {
 	}
 	return "", errors.New("FileZilla not configured")
 }
+
+func GetSecureCRTPath() (string, error) {
+	c, _ := load()
+	if c.SecureCRT != "" {
+		return c.SecureCRT, nil
+	}
+
+	return "", errors.New("SecureCRT not configured (UI choose later)")
+}
