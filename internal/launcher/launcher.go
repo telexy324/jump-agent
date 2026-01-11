@@ -3,21 +3,22 @@ package launcher
 import (
 	"errors"
 	"jump-agent/internal/agent"
+	"jump-agent/internal/model"
 	"os"
-	"os/exec"
 )
 
-func findDefaultSecureCRT() []string {
-	return []string{
-		`C:\Program Files\VanDyke Software\SecureCRT\SecureCRT.exe`,
-		`C:\Program Files (x86)\VanDyke Software\SecureCRT\SecureCRT.exe`,
-	}
+type Launcher interface {
+	Launch(*model.ConnInfo) error
 }
 
-func findDefaultFileZilla() []string {
-	return []string{
-		`C:\Program Files\FileZilla FTP Client\filezilla.exe`,
-		`C:\Program Files (x86)\FileZilla FTP Client\filezilla.exe`,
+func Get(name string) Launcher {
+	switch name {
+	case "filezilla":
+		return &FileZilla{}
+	case "securecrt":
+		fallthrough
+	default:
+		return &SecureCRT{}
 	}
 }
 
@@ -45,22 +46,4 @@ func detectOrAsk(app string, candidates []string) (string, error) {
 
 	agent.SavePath(app, exe)
 	return exe, nil
-}
-
-func LaunchSecureCRT(args []string) error {
-	path, err := detectOrAsk("SecureCRT", findDefaultSecureCRT())
-	if err != nil {
-		return err
-	}
-	cmd := exec.Command(path, args...)
-	return cmd.Start()
-}
-
-func LaunchFileZilla(args []string) error {
-	path, err := detectOrAsk("FileZilla", findDefaultFileZilla())
-	if err != nil {
-		return err
-	}
-	cmd := exec.Command(path, args...)
-	return cmd.Start()
 }
