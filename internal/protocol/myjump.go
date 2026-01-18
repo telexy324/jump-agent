@@ -1,10 +1,9 @@
 package protocol
 
 import (
-	"fmt"
 	"jump-agent/internal/launcher"
 	"jump-agent/internal/token"
-	"net/url"
+	"strings"
 )
 
 //func Handle(raw string) error {
@@ -33,16 +32,17 @@ import (
 //}
 
 func Handle(raw string) error {
-	u, err := url.Parse(raw)
-	if err != nil {
-		return err
-	}
-
-	tokenStr := u.Query().Get("token")
-	if tokenStr == "" {
-		return fmt.Errorf("token missing")
-	}
-
+	//u, err := url.Parse(raw)
+	//if err != nil {
+	//	return err
+	//}
+	//
+	//tokenStr := u.Query().Get("token")
+	//if tokenStr == "" {
+	//	return fmt.Errorf("token missing")
+	//}
+	tokenStr := strings.TrimPrefix(raw, "myjump://")
+	tokenStr = strings.TrimSuffix(tokenStr, "/")
 	conn, err := token.Consume(tokenStr)
 	if err != nil {
 		return err

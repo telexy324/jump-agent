@@ -1,16 +1,33 @@
 package main
 
 import (
+	"jump-agent/internal/agent"
 	"log"
 	"os"
+	"path/filepath"
 
 	"jump-agent/internal/protocol"
-	"jump-agent/internal/registry"
 )
 
 func main() {
+	exePath, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+
+	dir := filepath.Dir(exePath)
+	logPath := filepath.Join(dir, "myapp.log")
+
+	f, err := os.OpenFile(logPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	if err != nil {
+		panic(err)
+	}
+	log.SetOutput(f)
+
+	//mw := io.MultiWriter(os.Stdout, f)
+	//log.SetOutput(mw)
 	// 1️⃣ 确保自定义协议已注册
-	if err := registry.EnsureMyJumpProtocol(); err != nil {
+	if err := agent.RegisterProtocol(); err != nil {
 		log.Fatal("register protocol failed:", err)
 	}
 

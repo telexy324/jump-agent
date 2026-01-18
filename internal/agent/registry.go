@@ -32,7 +32,7 @@ func LoadPath(app string) (string, error) {
 
 func RegisterProtocol() error {
 	k, _, err := registry.CreateKey(registry.CURRENT_USER,
-		`Software\Classes\bastion-ssh`, registry.ALL_ACCESS)
+		`Software\Classes\myjump`, registry.ALL_ACCESS)
 	if err != nil {
 		return err
 	}

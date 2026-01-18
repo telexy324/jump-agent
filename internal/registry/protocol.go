@@ -13,7 +13,7 @@ func EnsureMyJumpProtocol() error {
 	exe, _ = filepath.Abs(exe)
 
 	key, _, err := registry.CreateKey(
-		registry.CLASSES_ROOT,
+		registry.CURRENT_USER,
 		"myjump",
 		registry.SET_VALUE,
 	)

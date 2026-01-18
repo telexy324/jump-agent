@@ -1,0 +1,17 @@
+2026/01/19 00:08:02 agent running (no protocol invoke)
+2026/01/19 00:12:26 
+2026/01/19 00:12:26 handle protocol error: 用户未选择可执行文件
+2026/01/19 00:14:04 
+2026/01/19 00:22:21 
+2026/01/19 00:22:22 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L  /P 0 127.0.0.1]
+2026/01/19 00:31:38 
+2026/01/19 00:31:38 
+2026/01/19 00:31:38 
+2026/01/19 00:31:38 0
+2026/01/19 00:31:38 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L  /P 0 127.0.0.1]
+2026/01/19 00:32:45 &{200 OK 200 HTTP/1.1 1 1 map[Content-Length:[139] Content-Type:[application/json; charset=utf-8] Date:[Sun, 18 Jan 2026 16:32:45 GMT]] 0xc00009a8a0 139 [] false false map[] 0xc000102140 <nil>}
+2026/01/19 00:32:45 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L  /P 0 127.0.0.1]
+2026/01/19 00:37:00 &{200 OK 200 HTTP/1.1 1 1 map[Content-Length:[139] Content-Type:[application/json; charset=utf-8] Date:[Sun, 18 Jan 2026 16:37:00 GMT]] 0xc00006a9e0 139 [] false false map[] 0xc000142140 <nil>}
+2026/01/19 00:37:00 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L  /P 0 127.0.0.1]
+2026/01/19 00:50:00 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 22 127.0.0.1]
+2026/01/19 00:54:57 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 22 /PASSWORD !QAZse432 127.0.0.1]

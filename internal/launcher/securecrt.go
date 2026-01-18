@@ -1,6 +1,7 @@
 package launcher
 
 import (
+	"log"
 	"os/exec"
 	"strconv"
 
@@ -32,11 +33,13 @@ func (s *SecureCRT) Launch(c *model.ConnInfo) error {
 	}
 	args := []string{
 		"/SSH2",
-		"/L", c.User,
+		"/L", c.JumpHost,
 		"/P", strconv.Itoa(c.Port),
-		c.JumpHost,
+		"/PASSWORD", c.Password,
+		"127.0.0.1",
 	}
 	cmd := exec.Command(path, args...)
+	log.Printf("Exec: %s %v\n", path, args)
 	return cmd.Start()
 }
 
@@ -44,5 +47,6 @@ func findDefaultSecureCRT() []string {
 	return []string{
 		`C:\Program Files\VanDyke Software\SecureCRT\SecureCRT.exe`,
 		`C:\Program Files (x86)\VanDyke Software\SecureCRT\SecureCRT.exe`,
+		`E:\SecureCRT\SecureCRT\SecureCRT.exe`,
 	}
 }
