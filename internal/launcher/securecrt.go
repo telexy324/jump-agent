@@ -47,6 +47,6 @@ func findDefaultSecureCRT() []string {
 	return []string{
 		`C:\Program Files\VanDyke Software\SecureCRT\SecureCRT.exe`,
 		`C:\Program Files (x86)\VanDyke Software\SecureCRT\SecureCRT.exe`,
-		`E:\SecureCRT\SecureCRT\SecureCRT.exe`,
+		//`E:\SecureCRT\SecureCRT\SecureCRT.exe`,
 	}
 }

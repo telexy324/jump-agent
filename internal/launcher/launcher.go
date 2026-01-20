@@ -4,6 +4,7 @@ import (
 	"errors"
 	"jump-agent/internal/agent"
 	"jump-agent/internal/model"
+	"log"
 	"os"
 )
 
@@ -41,6 +42,7 @@ func detectOrAsk(app string, candidates []string) (string, error) {
 	// 3. 用户选择 EXE
 	exe, err := agent.SelectExecutable()
 	if err != nil {
+		log.Println(err)
 		return "", errors.New("用户未选择可执行文件")
 	}
 

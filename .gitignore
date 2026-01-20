@@ -1,0 +1,4 @@
+.idea/
+
+/cmd/agent/*.log
+/cmd/agent/*.exe
