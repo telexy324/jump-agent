@@ -38,3 +38,6 @@
 2026/01/21 21:40:07 The operation was canceled by the user.
 2026/01/21 21:40:07 handle protocol error: 用户未选择可执行文件
 2026/01/21 21:43:45 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]
+2026/01/21 23:37:24 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]
+2026/01/21 23:37:43 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]
+2026/01/22 00:08:22 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]

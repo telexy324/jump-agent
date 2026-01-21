@@ -16,7 +16,7 @@ type Response struct {
 }
 
 // const api = "https://jump.example.com/api/agent/consume-token"
-const addr = "http://127.0.0.1:8888/jumpServer/getServer"
+const addr = "http://127.0.0.1:8080/api/jumpServer/getServer"
 
 func Consume(token string) (*model.ConnInfo, error) {
 	body, _ := json.Marshal(map[string]string{
