@@ -1,14 +1,12 @@
 package launcher
 
 import (
-	"log"
-	"os/exec"
-	"strconv"
-
+	"fmt"
 	"jump-agent/internal/model"
+	"os/exec"
 )
 
-type SecureCRT struct{}
+type MobaXterm struct{}
 
 //func (s *SecureCRT) Launch(c *model.ConnInfo) error {
 //	path, err := config.GetSecureCRTPath()
@@ -26,23 +24,22 @@ type SecureCRT struct{}
 //	return exec.Command(path, args...).Start()
 //}
 
-func (s *SecureCRT) Launch(c *model.SessionPayload) error {
-	path, err := detectOrAsk("SecureCRT", findDefaultSecureCRT())
+func (m *MobaXterm) Launch(c *model.SessionPayload) error {
+	path, err := detectOrAsk("MobaXterm", findDefaultMobaXterm())
 	if err != nil {
 		return err
 	}
-	args := []string{
-		"/SSH2",
-		"/L", c.Secret,
-		"/P", strconv.Itoa(c.BastionPort),
+	cmd := fmt.Sprintf(
+		"%s -ssh %s@%s -P %d -t target-host",
+		path,
+		c.Secret,
 		c.BastionHost,
-	}
-	cmd := exec.Command(path, args...)
-	log.Printf("Exec: %s %v\n", path, args)
-	return cmd.Start()
+		c.BastionPort,
+	)
+	return exec.Command("cmd", "/C", cmd).Start()
 }
 
-func findDefaultSecureCRT() []string {
+func findDefaultMobaXterm() []string {
 	return []string{
 		`C:\Program Files\VanDyke Software\SecureCRT\SecureCRT.exe`,
 		`C:\Program Files (x86)\VanDyke Software\SecureCRT\SecureCRT.exe`,

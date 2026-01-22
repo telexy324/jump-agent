@@ -9,13 +9,15 @@ import (
 )
 
 type Launcher interface {
-	Launch(*model.ConnInfo) error
+	Launch(*model.SessionPayload) error
 }
 
 func Get(name string) Launcher {
 	switch name {
 	case "filezilla":
 		return &FileZilla{}
+	case "mobaxterm":
+		return &MobaXterm{}
 	case "securecrt":
 		fallthrough
 	default:

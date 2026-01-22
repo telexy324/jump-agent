@@ -27,17 +27,16 @@ type FileZilla struct{}
 //	return exec.Command(path, url).Start()
 //}
 
-func (f *FileZilla) Launch(c *model.ConnInfo) error {
+func (f *FileZilla) Launch(c *model.SessionPayload) error {
 	path, err := detectOrAsk("FileZilla", findDefaultFileZilla())
 	if err != nil {
 		return err
 	}
 	url := fmt.Sprintf(
-		"sftp://%s:%s@%s:%d/",
-		c.User,
-		c.Password,
-		c.JumpHost,
-		c.Port,
+		"sftp://%s@%s:%d/",
+		c.Secret,
+		c.BastionHost,
+		c.BastionPort,
 	)
 	cmd := exec.Command(path, url)
 	return cmd.Start()

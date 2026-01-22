@@ -2,7 +2,7 @@ package protocol
 
 import (
 	"jump-agent/internal/launcher"
-	"jump-agent/internal/token"
+	"jump-agent/internal/model"
 	"strings"
 )
 
@@ -43,7 +43,19 @@ func Handle(raw string) error {
 	//}
 	tokenStr := strings.TrimPrefix(raw, "myjump://")
 	tokenStr = strings.TrimSuffix(tokenStr, "/")
-	conn, err := token.Consume(tokenStr)
+	//conn, err := token.Consume(tokenStr)
+	//if err != nil {
+	//	return err
+	//}
+	//conn := model.ConnInfo{
+	//	JumpHost: "",
+	//	Port:     0,
+	//	User:     "",
+	//	Protocol: "",
+	//	Client:   "",
+	//	Password: "",
+	//}
+	conn, err := model.ParseSession(tokenStr)
 	if err != nil {
 		return err
 	}
