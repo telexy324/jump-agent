@@ -3,7 +3,9 @@ package launcher
 import (
 	"fmt"
 	"jump-agent/internal/model"
+	"log"
 	"os/exec"
+	"strconv"
 )
 
 type MobaXterm struct{}
@@ -29,14 +31,16 @@ func (m *MobaXterm) Launch(c *model.SessionPayload) error {
 	if err != nil {
 		return err
 	}
-	cmd := fmt.Sprintf(
-		"%s -ssh %s@%s -P %d -t target-host",
-		path,
-		c.Secret,
-		c.BastionHost,
-		c.BastionPort,
-	)
-	return exec.Command("cmd", "/C", cmd).Start()
+
+	args := []string{
+		"-ssh",
+		fmt.Sprintf("%s@%s", c.Secret, c.BastionHost),
+		"-P",
+		strconv.Itoa(c.BastionPort),
+	}
+
+	log.Printf("Exec: %s %v", path, args)
+	return exec.Command(path, args...).Start()
 }
 
 func findDefaultMobaXterm() []string {

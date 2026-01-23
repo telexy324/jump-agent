@@ -3,6 +3,7 @@ package launcher
 import (
 	"fmt"
 	"jump-agent/internal/model"
+	"log"
 	"os/exec"
 )
 
@@ -39,6 +40,7 @@ func (f *FileZilla) Launch(c *model.SessionPayload) error {
 		c.BastionPort,
 	)
 	cmd := exec.Command(path, url)
+	log.Printf("Exec: %s %v\n", path, url)
 	return cmd.Start()
 }
 
