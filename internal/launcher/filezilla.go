@@ -46,7 +46,7 @@ func (f *FileZilla) Launch(c *model.SessionPayload) error {
 
 func findDefaultFileZilla() []string {
 	return []string{
-		`C:\Program Files\FileZilla FTP Client\filezilla.exe`,
-		`C:\Program Files (x86)\FileZilla FTP Client\filezilla.exe`,
+		//`C:\Program Files\FileZilla FTP Client\filezilla.exe`,
+		//`C:\Program Files (x86)\FileZilla FTP Client\filezilla.exe`,
 	}
 }
