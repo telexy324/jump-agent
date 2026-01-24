@@ -1,4 +1,4 @@
 .idea/
 
-cmd/agent/myapp.log
-cmd/agent/jump-agent.exe
+cmd/agent/*.log
+cmd/agent/*.exe
