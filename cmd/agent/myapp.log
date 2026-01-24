@@ -41,3 +41,12 @@
 2026/01/21 23:37:24 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]
 2026/01/21 23:37:43 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]
 2026/01/22 00:08:22 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L 192.168.192.151 /P 44488 /PASSWORD  127.0.0.1]
+2026/01/24 10:32:29 agent running (no protocol invoke)
+2026/01/24 10:33:36 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L f745aa61aa41d0264142a7b006e628a4 /P 44488 127.0.0.1]
+2026/01/24 10:33:54 Exec: E:\FileZilla_v3.54.1_x64_Stable\filezilla.exe sftp://7120bc16fe3978a5f441b22cdc5aded1@127.0.0.1:44488/
+2026/01/24 10:48:33 Exec: E:\Mobatek\MobaXterm\MobaXterm.exe [-ssh 43446ee3752e9bbe8324289bd90fa85d@127.0.0.1 -P 44488]
+2026/01/24 12:02:59 Exec: E:\SecureCRT\SecureCRT\SecureCRT.exe [/SSH2 /L a2261d8478cfb13061e7452389d8fee2 /P 44488 127.0.0.1]
+2026/01/24 12:03:22 Exec: E:\Mobatek\MobaXterm\MobaXterm.exe [exec ssh 7b24238bc64a4f52e0079478ad626f2f@127.0.0.1 -P 44488]
+2026/01/24 12:04:12 Exec: E:\Mobatek\MobaXterm\MobaXterm.exe [exec -ssh c7a1693f1970f531f9f6b2de558a4c97@127.0.0.1 -P 44488]
+2026/01/24 12:06:31 Exec: E:\Mobatek\MobaXterm\MobaXterm.exe [-newtab ssh 1e23c7545646bf786d9bb5cd75a88e5d@127.0.0.1 -p 44488]
+2026/01/24 12:06:40 Exec: E:\Mobatek\MobaXterm\MobaXterm.exe [-newtab ssh a68ad43887bce7dd9af8cd66b70203b7@127.0.0.1 -p 44488]

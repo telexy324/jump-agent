@@ -5,7 +5,6 @@ import (
 	"jump-agent/internal/model"
 	"log"
 	"os/exec"
-	"strconv"
 )
 
 type MobaXterm struct{}
@@ -32,11 +31,16 @@ func (m *MobaXterm) Launch(c *model.SessionPayload) error {
 		return err
 	}
 
+	sshCmd := fmt.Sprintf(
+		"ssh %s@%s -p %d",
+		c.Secret,
+		c.BastionHost,
+		c.BastionPort,
+	)
+
 	args := []string{
-		"-ssh",
-		fmt.Sprintf("%s@%s", c.Secret, c.BastionHost),
-		"-P",
-		strconv.Itoa(c.BastionPort),
+		"-newtab",
+		sshCmd,
 	}
 
 	log.Printf("Exec: %s %v", path, args)
@@ -45,8 +49,6 @@ func (m *MobaXterm) Launch(c *model.SessionPayload) error {
 
 func findDefaultMobaXterm() []string {
 	return []string{
-		`C:\Program Files\VanDyke Software\SecureCRT\SecureCRT.exe`,
-		`C:\Program Files (x86)\VanDyke Software\SecureCRT\SecureCRT.exe`,
 		//`E:\SecureCRT\SecureCRT\SecureCRT.exe`,
 	}
 }
