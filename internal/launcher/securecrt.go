@@ -1,11 +1,10 @@
 package launcher
 
 import (
+	"jump-agent/internal/model"
 	"log"
 	"os/exec"
 	"strconv"
-
-	"jump-agent/internal/model"
 )
 
 type SecureCRT struct{}
@@ -26,12 +25,28 @@ type SecureCRT struct{}
 //	return exec.Command(path, args...).Start()
 //}
 
+//var crtStarted atomic.Bool
+//
+//func ensureSecureCRT(path string) {
+//	if crtStarted.Load() {
+//		return
+//	}
+//
+//	exec.Command(path).Start()
+//	time.Sleep(1500 * time.Millisecond) // 非常关键
+//	crtStarted.Store(true)
+//}
+
 func (s *SecureCRT) Launch(c *model.SessionPayload) error {
 	path, err := detectOrAsk("SecureCRT", findDefaultSecureCRT())
 	if err != nil {
 		return err
 	}
+
+	//ensureSecureCRT(path)
+
 	args := []string{
+		"/T",
 		"/SSH2",
 		"/L", c.Secret,
 		"/P", strconv.Itoa(c.BastionPort),

@@ -1,9 +1,11 @@
 package protocol
 
 import (
+	"errors"
 	"jump-agent/internal/launcher"
 	"jump-agent/internal/model"
 	"strings"
+	"time"
 )
 
 //func Handle(raw string) error {
@@ -55,10 +57,26 @@ func Handle(raw string) error {
 	//	Client:   "",
 	//	Password: "",
 	//}
-	conn, err := model.ParseSession(tokenStr)
+	conns, err := model.ParseSession(tokenStr)
 	if err != nil {
 		return err
 	}
+	if len(conns) == 0 {
+		return errors.New("invalid token, no connections")
+	}
 
-	return launcher.Get(conn.Client).Launch(conn)
+	if len(conns) == 1 {
+		return launcher.Get(conns[0].Client).Launch(conns[0])
+	}
+	if err := launcher.Get(conns[0].Client).Launch(conns[0]); err != nil {
+		return err
+	}
+	time.Sleep(2000 * time.Millisecond)
+	for _, conn := range conns[1:] {
+		if err := launcher.Get(conn.Client).Launch(conn); err != nil {
+			return err
+		}
+		time.Sleep(1000 * time.Millisecond)
+	}
+	return nil
 }

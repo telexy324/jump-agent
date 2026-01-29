@@ -32,7 +32,7 @@ type SessionPayload struct {
 	ExpireAt int64 `json:"exp"`
 }
 
-func ParseSession(token string) (*SessionPayload, error) {
+func ParseSession(token string) ([]*SessionPayload, error) {
 	parts := strings.Split(token, ".")
 	if len(parts) != 2 {
 		return nil, errors.New("invalid session format")
@@ -57,14 +57,16 @@ func ParseSession(token string) (*SessionPayload, error) {
 		return nil, err
 	}
 
-	var payload SessionPayload
-	if err := json.Unmarshal(raw, &payload); err != nil {
+	var payloads []*SessionPayload
+	if err := json.Unmarshal(raw, &payloads); err != nil {
 		return nil, err
 	}
 
-	if time.Now().Unix() > payload.ExpireAt {
-		return nil, errors.New("session expired")
+	for _, payload := range payloads {
+		if time.Now().Unix() > payload.ExpireAt {
+			return nil, errors.New("session expired")
+		}
 	}
 
-	return &payload, nil
+	return payloads, nil
 }
