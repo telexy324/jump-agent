@@ -71,7 +71,7 @@ func Handle(raw string) error {
 	if err := launcher.Get(conns[0].Client).Launch(conns[0]); err != nil {
 		return err
 	}
-	time.Sleep(2000 * time.Millisecond)
+	//time.Sleep(2000 * time.Millisecond)
 	for _, conn := range conns[1:] {
 		if err := launcher.Get(conn.Client).Launch(conn); err != nil {
 			return err

@@ -5,25 +5,23 @@ import (
 	"jump-agent/internal/model"
 	"log"
 	"os/exec"
+	"sync/atomic"
+	"time"
 )
 
 type MobaXterm struct{}
 
-//func (s *SecureCRT) Launch(c *model.ConnInfo) error {
-//	path, err := config.GetSecureCRTPath()
-//	if err != nil {
-//		return err
-//	}
-//
-//	args := []string{
-//		"/SSH2",
-//		"/L", c.User,
-//		"/P", strconv.Itoa(c.Port),
-//		c.JumpHost,
-//	}
-//
-//	return exec.Command(path, args...).Start()
-//}
+var crtStarted atomic.Bool
+
+func ensureSecureMoba(path string) {
+	if crtStarted.Load() {
+		return
+	}
+
+	exec.Command(path).Start()
+	time.Sleep(3000 * time.Millisecond) // 非常关键
+	crtStarted.Store(true)
+}
 
 func (m *MobaXterm) Launch(c *model.SessionPayload) error {
 	path, err := detectOrAsk("MobaXterm", findDefaultMobaXterm())
@@ -37,6 +35,8 @@ func (m *MobaXterm) Launch(c *model.SessionPayload) error {
 		c.BastionHost,
 		c.BastionPort,
 	)
+
+	ensureSecureMoba(path)
 
 	args := []string{
 		"-newtab",
