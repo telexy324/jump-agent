@@ -22,9 +22,11 @@ import (
 var hmacKey = []byte("bastion-super-secret-key")
 
 type SessionPayload struct {
-	BastionHost string `json:"bh"` // 127.0.0.1 / bastion.example.com
-	BastionPort int    `json:"bp"` // 2222
-	Client      string `json:"c"`
+	BastionHost   string `json:"bh"` // 127.0.0.1 / bastion.example.com
+	BastionPort   int    `json:"bp"` // 2222
+	Client        string `json:"c"`
+	WebSocketURL  string `json:"wu,omitempty"`
+	WebSocketPath string `json:"wp,omitempty"`
 
 	Secret string `json:"s"` // 随机 session secret
 

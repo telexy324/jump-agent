@@ -4,6 +4,7 @@ import (
 	"errors"
 	"jump-agent/internal/launcher"
 	"jump-agent/internal/model"
+	"jump-agent/internal/tunnel"
 	"strings"
 	"time"
 )
@@ -65,18 +66,44 @@ func Handle(raw string) error {
 		return errors.New("invalid token, no connections")
 	}
 
-	if len(conns) == 1 {
-		return launcher.Get(conns[0].Client).Launch(conns[0])
+	tunnels := make([]*tunnel.Session, 0, len(conns))
+	localConns := make([]*model.SessionPayload, 0, len(conns))
+	for _, conn := range conns {
+		t, localConn, err := tunnel.Start(conn)
+		if err != nil {
+			for _, started := range tunnels {
+				started.Close()
+			}
+			return err
+		}
+		tunnels = append(tunnels, t)
+		localConns = append(localConns, localConn)
 	}
-	if err := launcher.Get(conns[0].Client).Launch(conns[0]); err != nil {
+	defer func() {
+		for _, t := range tunnels {
+			t.Close()
+		}
+	}()
+
+	if len(conns) == 1 {
+		if err := launcher.Get(localConns[0].Client).Launch(localConns[0]); err != nil {
+			return err
+		}
+		tunnels[0].Wait()
+		return nil
+	}
+	if err := launcher.Get(localConns[0].Client).Launch(localConns[0]); err != nil {
 		return err
 	}
 	//time.Sleep(2000 * time.Millisecond)
-	for _, conn := range conns[1:] {
+	for _, conn := range localConns[1:] {
 		if err := launcher.Get(conn.Client).Launch(conn); err != nil {
 			return err
 		}
 		time.Sleep(1000 * time.Millisecond)
+	}
+	for _, t := range tunnels {
+		t.Wait()
 	}
 	return nil
 }
