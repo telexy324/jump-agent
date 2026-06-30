@@ -18,7 +18,10 @@ import (
 	"nhooyr.io/websocket"
 )
 
-const idleTimeout = 10 * time.Minute
+const (
+	idleTimeout  = 10 * time.Minute
+	pingInterval = 10 * time.Second
+)
 
 type Session struct {
 	listener   net.Listener
@@ -72,10 +75,12 @@ func (t *Session) acceptLoop(payload *model.SessionPayload) {
 		if err != nil {
 			if ne, ok := err.(net.Error); ok && ne.Timeout() {
 				if t.active.Load() == 0 && time.Since(time.Unix(t.lastActive.Load(), 0)) > idleTimeout {
+					log.Printf("timeout")
 					return
 				}
 				continue
 			}
+			log.Printf("timeout err")
 			return
 		}
 
@@ -112,13 +117,20 @@ func (t *Session) proxy(localConn net.Conn, payload *model.SessionPayload) {
 			cancel()
 		})
 	}
+	go keepAlive(ctx, wsConn, closeBoth)
 
 	go func() {
-		_, _ = io.Copy(remoteConn, localConn)
+		_, err := io.Copy(remoteConn, localConn)
+		if err != nil {
+			log.Printf("local to websocket copy stopped: %v", err)
+		}
 		closeBoth()
 	}()
 
-	_, _ = io.Copy(localConn, remoteConn)
+	_, err = io.Copy(localConn, remoteConn)
+	if err != nil {
+		log.Printf("websocket to local copy stopped: %v", err)
+	}
 	closeBoth()
 	t.touch()
 }
@@ -138,6 +150,27 @@ func dialWebSocket(ctx context.Context, payload *model.SessionPayload) (*websock
 		lastErr = err
 	}
 	return nil, lastErr
+}
+
+func keepAlive(ctx context.Context, wsConn *websocket.Conn, closeBoth func()) {
+	ticker := time.NewTicker(pingInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-ticker.C:
+			pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+			err := wsConn.Ping(pingCtx)
+			cancel()
+			if err != nil {
+				log.Printf("websocket ping failed: %v", err)
+				closeBoth()
+				return
+			}
+		}
+	}
 }
 
 func wsEndpoints(payload *model.SessionPayload) []string {
