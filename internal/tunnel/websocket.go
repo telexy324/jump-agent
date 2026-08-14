@@ -19,8 +19,9 @@ import (
 )
 
 const (
-	idleTimeout  = 10 * time.Minute
-	pingInterval = 10 * time.Second
+	idleTimeout                = 10 * time.Minute
+	websocketHeartbeatInterval = 10 * time.Second
+	websocketHeartbeatTimeout  = 5 * time.Second
 )
 
 type Session struct {
@@ -117,7 +118,7 @@ func (t *Session) proxy(localConn net.Conn, payload *model.SessionPayload) {
 			cancel()
 		})
 	}
-	go keepAlive(ctx, wsConn, closeBoth)
+	go runWebSocketHeartbeat(ctx, wsConn, closeBoth)
 
 	go func() {
 		_, err := io.Copy(remoteConn, localConn)
@@ -152,8 +153,8 @@ func dialWebSocket(ctx context.Context, payload *model.SessionPayload) (*websock
 	return nil, lastErr
 }
 
-func keepAlive(ctx context.Context, wsConn *websocket.Conn, closeBoth func()) {
-	ticker := time.NewTicker(pingInterval)
+func runWebSocketHeartbeat(ctx context.Context, wsConn *websocket.Conn, closeBoth func()) {
+	ticker := time.NewTicker(websocketHeartbeatInterval)
 	defer ticker.Stop()
 
 	for {
@@ -161,7 +162,7 @@ func keepAlive(ctx context.Context, wsConn *websocket.Conn, closeBoth func()) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
+			pingCtx, cancel := context.WithTimeout(ctx, websocketHeartbeatTimeout)
 			err := wsConn.Ping(pingCtx)
 			cancel()
 			if err != nil {
